@@ -1,0 +1,16 @@
+{
+  "name": "icp-assignment-lecture-portal",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "node --check public/app.js && node --check scripts/build.mjs",
+    "test": "node tests/database.mjs",
+    "test:ui": "node tests/frontend.mjs"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.3.14",
+    "playwright": "1.62.1"
+  }
+}

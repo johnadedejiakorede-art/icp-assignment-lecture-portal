@@ -1,0 +1,6 @@
+-- First SIGN UP through your new portal. Then replace the email below and run
+-- in the NEW project's SQL editor (owner access). Never grant admin from frontend.
+begin;
+update public.profiles set approved=true where email='YOUR_ADMIN_EMAIL';
+update public.user_roles set role='admin' where user_id=(select id from public.profiles where email='YOUR_ADMIN_EMAIL');
+commit;
