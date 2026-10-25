@@ -17,10 +17,10 @@ create table public.icp_notifications(id uuid primary key default gen_random_uui
 create index on icp_lecture_notes(course_id);create index on icp_assignments(course_id);create index on icp_submissions(student_id);create index on icp_course_memberships(student_id);create index on icp_lecturer_allocations(lecturer_id);create index on icp_notifications(user_id,created_at desc);
 -- These narrowly scoped helpers avoid recursive RLS. No user-editable JWT claims authorize access.
 create function portal_private.role_name() returns text language sql stable security definer set search_path='' as $$select r.role from public.icp_user_roles r join public.icp_profiles p on p.id=r.user_id where r.user_id=auth.uid() and p.approved$$;
-create function portal_private.admin() returns boolean language sql stable as $$select coalesce(portal_private.role_name()='admin',false)$$;
+create function portal_private.admin() returns boolean language sql stable set search_path='' as $$select coalesce(portal_private.role_name()='admin',false)$$;
 create function portal_private.teaches(c uuid) returns boolean language sql stable security definer set search_path='' as $$select auth.uid() is not null and portal_private.role_name()='lecturer' and exists(select 1 from public.icp_lecturer_allocations where course_id=c and lecturer_id=auth.uid())$$;
 create function portal_private.member(c uuid) returns boolean language sql stable security definer set search_path='' as $$select auth.uid() is not null and portal_private.role_name()='student' and exists(select 1 from public.icp_course_memberships where course_id=c and student_id=auth.uid())$$;
-create function portal_private.course_access(c uuid) returns boolean language sql stable as $$select portal_private.admin() or portal_private.teaches(c) or portal_private.member(c)$$;
+create function portal_private.course_access(c uuid) returns boolean language sql stable set search_path='' as $$select portal_private.admin() or portal_private.teaches(c) or portal_private.member(c)$$;
 create function portal_private.signup() returns trigger language plpgsql security definer set search_path='' as $$begin
  insert into public.icp_profiles(id,email,full_name,requested_role) values(new.id,coalesce(new.email,''),coalesce(nullif(new.raw_user_meta_data->>'full_name',''),split_part(new.email,'@',1)),case when new.raw_user_meta_data->>'requested_role'='lecturer' then 'lecturer' else 'student' end);
  insert into public.icp_user_roles(user_id,role) values(new.id,'student');return new;end$$;

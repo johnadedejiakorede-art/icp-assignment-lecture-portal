@@ -30,6 +30,7 @@ Create a separate project in their own organization. In its SQL editor, run the 
 3. `database/003_demo_catalogue.sql` (optional synthetic catalogue)
 4. `database/004_shared_auth_isolation.sql` (shared-hosting compatibility; no-op without FoodCo)
 5. `database/005_submission_bucket_name.sql` (compatibility correction)
+6. `database/006_helper_search_path.sql` (helper hardening)
 
 The scripts are one-time installation scripts for an empty project. They deliberately fail on name collisions; they do not drop existing data. Use a fresh project if setup fails halfway; each numbered script is transactional.
 

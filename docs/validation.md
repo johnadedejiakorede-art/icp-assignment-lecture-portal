@@ -1,33 +1,14 @@
-# Validation record — 24 October 2026
+# Deployment validation — 25 October 2026
 
-## Passed
+Live frontend: https://icp-assignment-portal.pages.dev/
+Backend: isolated ICP tables in Supabase project enwlfhfkbrqrkpfotpgy.
 
-- JavaScript syntax checks (`npm run check`).
-- Embedded PostgreSQL installation of all three numbered SQL files.
-- Synthetic Auth signup trigger and profile creation.
-- RLS on all 11 exposed tables.
-- Member access to published assignments and notes; draft notes and files hidden.
-- Student attempts to approve themselves/change roles do not update rows.
-- Student cannot insert lecturer notes.
-- Student B cannot read Student A submission row or file.
-- Nonallocated lecturer cannot read/grade that submission.
-- Draft grades hidden; published own grade visible.
-- Score above assignment maximum rejected.
-- New submission receipt and notification creation.
-- Replacing work clears existing feedback.
-- Submission/object upload after server deadline rejected.
-- Admin submission access restricted; anonymous table access rejected.
-- Static build with placeholder target configuration succeeds.
-- Original ICP URL and server secret key build guards reject unsafe configuration.
-- Copied deployed stylesheet is byte-identical to retrieved source; asset digests recorded.
+Passed: JavaScript syntax; embedded PostgreSQL RLS/deadline tests; Cloudflare production build/deployment; all four demo account password logins through Supabase Auth; three private PDF note uploads; two published assignments; student submission upload; lecturer score/feedback publication; own published feedback read; second student denied access to another submission/file; anonymous private-file access denied; course member note download. Live login page rendered and visually inspected in browser.
 
-Database tests use PGlite PostgreSQL with minimal simulated Auth/Storage tables and real RLS/trigger execution. They do not test Supabase's HTTP services or its object-store payload validation.
+Four presentation accounts have independent portal profiles. No passwords are stored in this repository. Demo contents are synthetic. FoodCo row counts before/after: 7 profiles, 32 products, 11 orders. The shared signup trigger now excludes only ICP-marked registrations; FoodCo registrations retain their existing path.
 
-## Not verified in this environment
+Portal helper search_path warnings were corrected. Existing notices for other applications were outside this change.
 
-- Browser screenshots and responsive rendering: Playwright Chromium installation failed (browser archive download was incomplete). `tests/frontend.mjs` is supplied but has not passed here. It uses a mocked Supabase client and compares source style tokens at 1440px/390px.
-- Live Supabase Auth email confirmation/recovery, Storage HTTP requests, deployed frontend/backend integration and SMTP delivery.
-- Pixel-by-pixel similarity across all three role dashboards.
-- Live acceptance checklist: requires a new target Supabase project and Cloudflare deployment in the recipient's accounts.
+Limitations: browser UI login and all interactive role routes were not end-to-end browser-tested; API workflow checks passed. Mobile screenshot comparison remains pending. New-user email confirmation and password-recovery redirects/SMTP delivery have not been configured or verified because the connected management account did not have access to the shared project's Auth configuration. Existing confirmed demo logins work. Shared Auth settings were left unchanged.
 
-No new live database or Cloudflare deployment was created for this source-code handoff. Existing ICP resources were read only and were not changed.
+The original ICP course-registration database/site was not modified. Shared-hosting compatibility deliberately modifies the FoodCo Auth trigger condition to prevent portal users from receiving FoodCo profiles; no FoodCo data or business function was removed.
