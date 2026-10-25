@@ -21,3 +21,7 @@ Two students were imported once in the current deployment. One shares an existin
 ## Department access and invitation filters
 
 Apply 010_department_access_and_scoped_invites.sql, 011_department_catalogue_sync.sql and 012_department_membership_guard.sql after 001–009. These enable automatic department catalogue membership without requiring a student level/semester, retain explicit lecturer removals, synchronize later mapping changes, validate named invitation course scope, and activate administrator-preapproved email-bound allocations after verified acceptance. Generic invitation approval rules remain unchanged.
+
+## Academic workspace and current-term access
+
+Apply 013_academic_workspace.sql and 014_people_performance.sql after 001–012. These supersede department-wide student access with exact programme/department/ND level/session/semester access. Complete missing student academic fields through Students → Edit record; do not infer them. Current-term notes/assignments need explicit session and semester tags. Old untagged material remains preserved and can be tagged by its allocated lecturer. Lecturer access follows active session mappings. The admin-only analytics RPC returns numeric marks and roster metadata, without file contents or written feedback. CSV department/programme setup is atomic and portable with the other SQL scripts.

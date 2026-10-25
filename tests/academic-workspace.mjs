@@ -111,6 +111,7 @@ console.log('PASS: department auto-enrolment without level/semester, department 
 
 await db.exec('reset role');
 await db.exec(readFileSync('database/013_academic_workspace.sql','utf8'));
+await db.exec(readFileSync('database/014_people_performance.sql','utf8'));
 await db.query("select set_config('request.jwt.claim.sub',$1,false)",[noLevel]);await db.exec('set role authenticated');
 assert.equal((await db.query('select * from icp_courses')).rows.length,0,'Missing cohort must not expose department-wide courses');
 await as('admin');
@@ -127,6 +128,7 @@ assert.equal((await db.query("select * from icp_courses where code='TEST 111'"))
 await db.query('select icp_save_department($1,$2)',[setup,JSON.stringify(batch)]);
 assert.equal((await db.query("select * from icp_courses where code='TEST 111'")).rows.length,1,'Import idempotent');
 let invalid=false;try{await db.query('select icp_save_department($1,$2)',[setup,JSON.stringify([...batch,{code:'BAD',title:'Bad',year_level:'9',semester_id:'1'}])]);}catch{invalid=true;}assert.ok(invalid);
+const lecturerStats=(await db.query('select icp_person_analytics($1) as v',[scopedUser])).rows[0].v;assert.ok(lecturerStats.courses[0].students.some(p=>p.id===noLevel));
 const stats=(await db.query('select icp_person_analytics($1) as v',[noLevel])).rows[0].v;assert.equal(stats.courses.length,10);
 console.log('PASS: strict cohort access, missing context denies, admin-only numeric analytics, atomic idempotent batch import.');
 await db.exec('reset role');
