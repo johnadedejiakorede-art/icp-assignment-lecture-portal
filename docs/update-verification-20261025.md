@@ -40,3 +40,7 @@ Live database migrations 007–009 and edge function are installed. Source catal
 ## Standalone migration plan
 
 The portal is standalone from the source course-registration application; it still shares infrastructure/Auth with FoodCo due the free-project limit. A fully separate Supabase Auth/Storage deployment remains a separate reversible step: provision an available target project, install database scripts in order, privately transfer only authorized portal Auth identities and icp_ records/files, resolve any existing-email conflict before switching, add target redirects, validate isolation, then change only the portal Cloudflare environment and rebuild. Preserve the old portal dataset temporarily for rollback. Never migrate FoodCo tables or change its credentials, and never put credentials into the repository.
+
+## Post-deployment checks
+
+Cloudflare deployment edbcfad7-61cb-4cb2-b314-f456c7107313 succeeded for GitHub commit d9e49b90c4dc3a91cbb6e2312ebd922d59f5577b. The production homepage and student-registration academic fields were inspected in the browser. Live API checks passed for admin analytics, generic invite creation/revocation, non-admin invitation denial, administrator private-file denial and email-endpoint role authorization. The verification invitation was explicitly revoked. No messages were sent to real people.
