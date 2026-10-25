@@ -17,3 +17,7 @@ Install 007_portal_enrolment_invitations.sql, 008_authorized_catalogue.sql and 0
 Add the new portal's callback/verification/recovery routes to Supabase's redirect allow-list, preserving all unrelated app entries if hosting is shared. Verify actual email delivery before calling invitation email complete. A generic invitation link and a named email invitation have different allocation rules. The local catalogue snapshot contains academic structure only.
 
 Two students were imported once in the current deployment. One shares an existing destination FoodCo Auth email; its original destination password was deliberately preserved. A migration to a truly separate Auth project must explicitly decide which credential the owner intends to retain for that email. Never replace an unrelated app's credential silently.
+
+## Department access and invitation filters
+
+Apply 010_department_access_and_scoped_invites.sql and 011_department_catalogue_sync.sql after 001–009. These enable automatic department catalogue membership without requiring a student level/semester, retain explicit lecturer removals, synchronize later mapping changes, validate named invitation course scope, and activate administrator-preapproved email-bound allocations after verified acceptance. Generic invitation approval rules remain unchanged.

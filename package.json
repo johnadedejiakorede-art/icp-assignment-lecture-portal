@@ -5,11 +5,13 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "check": "node --check public/app.js && node --check public/portal-update.js && node --check scripts/build.mjs",
+    "check": "node --check public/app.js && node --check public/portal-update.js && node --check public/invitation-picker.js && node --check scripts/build.mjs",
     "test": "node tests/database.mjs",
     "test:ui": "node tests/frontend.mjs",
     "test:update": "node tests/update.mjs",
-    "test:routes": "node tests/public-routes.mjs"
+    "test:routes": "node tests/public-routes.mjs",
+    "test:department": "node tests/department-access.mjs",
+    "test:picker": "node tests/invitation-picker.mjs"
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.3.14",
