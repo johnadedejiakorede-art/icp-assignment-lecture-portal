@@ -20,4 +20,4 @@ Two students were imported once in the current deployment. One shares an existin
 
 ## Department access and invitation filters
 
-Apply 010_department_access_and_scoped_invites.sql and 011_department_catalogue_sync.sql after 001–009. These enable automatic department catalogue membership without requiring a student level/semester, retain explicit lecturer removals, synchronize later mapping changes, validate named invitation course scope, and activate administrator-preapproved email-bound allocations after verified acceptance. Generic invitation approval rules remain unchanged.
+Apply 010_department_access_and_scoped_invites.sql, 011_department_catalogue_sync.sql and 012_department_membership_guard.sql after 001–009. These enable automatic department catalogue membership without requiring a student level/semester, retain explicit lecturer removals, synchronize later mapping changes, validate named invitation course scope, and activate administrator-preapproved email-bound allocations after verified acceptance. Generic invitation approval rules remain unchanged.

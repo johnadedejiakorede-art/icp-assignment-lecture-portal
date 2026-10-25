@@ -79,6 +79,7 @@ assert.ok((await db.query('select icp_activity_summary() as s')).rows[0].s.stude
 await db.exec('reset role');
 await db.exec(readFileSync('database/010_department_access_and_scoped_invites.sql','utf8'));
 await db.exec(readFileSync('database/011_department_catalogue_sync.sql','utf8'));
+await db.exec(readFileSync('database/012_department_membership_guard.sql','utf8'));
 await as('admin');
 const dept=(await db.query('select department_id from icp_programmes where id=$1',[programme])).rows[0].department_id;
 const alternative=(await db.query("select id from icp_departments where name='Business administration'")).rows[0].id;
@@ -95,6 +96,8 @@ assert.equal((await db.query('select count(*)::int as n from icp_course_membersh
 const addedCourse=(await db.query("insert into icp_courses(code,title,is_demo) values('COM TEST','New department course',false) returning id")).rows[0].id;
 await db.query('insert into icp_curriculum(programme_id,course_id,session_id,semester_id,year_level) values($1,$2,$3,1,1)',[programme,addedCourse,session]);
 assert.equal((await db.query('select count(*)::int as n from icp_course_memberships where student_id=$1 and course_id=$2 and status=$3',[noLevel,addedCourse,'enrolled'])).rows[0].n,1);
+await db.query('update icp_profiles set department_id=null where id=$1',[noLevel]);
+await db.exec('reset role');await db.query("select set_config('request.jwt.claim.sub',$1,false)",[noLevel]);await db.exec('set role authenticated');assert.equal((await db.query('select * from icp_courses where id=$1',[realCourse])).rows.length,0);await as('admin');await db.query('update icp_profiles set department_id=$1 where id=$2',[dept,noLevel]);
 const scope={invitee_name:'Scoped Lecturer',invitee_email:'scoped@example.test',department:dept,programme_id:programme,session_id:session,semester_id:1,year_level:1,courses:[realCourse],expires_hours:24,max_uses:1};
 let mismatch=false;try{await db.query('select icp_create_scoped_invite($1)',[{...scope,semester_id:2}]);}catch{mismatch=true;}assert.ok(mismatch);
 const scoped=(await db.query('select icp_create_scoped_invite($1) as i',[scope])).rows[0].i;
