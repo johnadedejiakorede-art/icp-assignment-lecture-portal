@@ -1,3 +1,7 @@
+# Latest update
+
+See [verification report](docs/update-verification-20261025.md) for the homepage, student-only registration, lecturer invitations, real catalogue import, one-time student account copy and exact remaining limitations.
+
 # Deployment update — 25 October 2026
 
 The live portal uses the existing Supabase project `enwlfhfkbrqrkpfotpgy` with isolated `icp_` tables, `portal_private` helpers and `icp-` private buckets. It shares Auth infrastructure with FoodCo. Portal signups carry `portal_app=icp_lecture`; the shared-hosting migration excludes those signups from FoodCo profile creation. Existing FoodCo records remain unchanged. See `docs/migration.md`.
@@ -31,6 +35,9 @@ Create a separate project in their own organization. In its SQL editor, run the 
 4. `database/004_shared_auth_isolation.sql` (shared-hosting compatibility; no-op without FoodCo)
 5. `database/005_submission_bucket_name.sql` (compatibility correction)
 6. `database/006_helper_search_path.sql` (helper hardening)
+7. `database/007_portal_enrolment_invitations.sql`
+8. `database/008_authorized_catalogue.sql`
+9. `database/009_registration_and_invite_delivery.sql`
 
 The scripts are one-time installation scripts for an empty project. They deliberately fail on name collisions; they do not drop existing data. Use a fresh project if setup fails halfway; each numbered script is transactional.
 

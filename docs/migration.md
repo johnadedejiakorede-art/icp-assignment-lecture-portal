@@ -9,3 +9,11 @@ To preserve live data, stop portal writes during the move, export only portal pr
 Restore Auth identities first, then table data in dependency order, then file objects. Run RLS/access tests for student privacy and lecturer allocations. Configure exact portal confirmation/recovery redirects in the new project without changing any unrelated app redirects. Switch Cloudflare environment URL/key, rebuild, test, and retain the old portal data temporarily for rollback. Only remove old portal objects after successful verification; do not remove shared FoodCo/Auth data.
 
 The repository contains schema and app code. Uploaded files, passwords, live records and Auth configuration are not included automatically by a GitHub clone.
+
+## Homepage/invitation update
+
+Install 007_portal_enrolment_invitations.sql, 008_authorized_catalogue.sql and 009_registration_and_invite_delivery.sql after scripts 001–006. Deploy supabase/functions/icp-lecturer-invite/index.ts as `icp-lecturer-invite` with JWT verification enabled. It uses the platform-provided SUPABASE_URL, SUPABASE_ANON_KEY and SUPABASE_SERVICE_ROLE_KEY only on the server. For another deployment origin, change the explicit allowed origin in that function and redeploy.
+
+Add the new portal's callback/verification/recovery routes to Supabase's redirect allow-list, preserving all unrelated app entries if hosting is shared. Verify actual email delivery before calling invitation email complete. A generic invitation link and a named email invitation have different allocation rules. The local catalogue snapshot contains academic structure only.
+
+Two students were imported once in the current deployment. One shares an existing destination FoodCo Auth email; its original destination password was deliberately preserved. A migration to a truly separate Auth project must explicitly decide which credential the owner intends to retain for that email. Never replace an unrelated app's credential silently.

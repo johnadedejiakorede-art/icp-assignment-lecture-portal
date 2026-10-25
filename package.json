@@ -5,12 +5,15 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "check": "node --check public/app.js && node --check scripts/build.mjs",
+    "check": "node --check public/app.js && node --check public/portal-update.js && node --check scripts/build.mjs",
     "test": "node tests/database.mjs",
-    "test:ui": "node tests/frontend.mjs"
+    "test:ui": "node tests/frontend.mjs",
+    "test:update": "node tests/update.mjs",
+    "test:routes": "node tests/public-routes.mjs"
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.3.14",
+    "happy-dom": "20.0.10",
     "playwright": "1.62.1"
   }
 }
