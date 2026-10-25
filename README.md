@@ -1,3 +1,7 @@
+# Deployment update — 25 October 2026
+
+The live portal uses the existing Supabase project `enwlfhfkbrqrkpfotpgy` with isolated `icp_` tables, `portal_private` helpers and `icp-` private buckets. It shares Auth infrastructure with FoodCo. Portal signups carry `portal_app=icp_lecture`; the shared-hosting migration excludes those signups from FoodCo profile creation. Existing FoodCo records remain unchanged. See `docs/migration.md`.
+
 # ICP Assignment & Lecture Note Portal
 
 An independent academic project for Ibadan City Polytechnic, Ibadan. Static HTML/CSS/JavaScript frontend, Supabase Auth/Postgres/private Storage, Cloudflare Pages hosting.
@@ -24,6 +28,8 @@ Create a separate project in their own organization. In its SQL editor, run the 
 1. `database/001_schema.sql`
 2. `database/002_storage_notifications.sql`
 3. `database/003_demo_catalogue.sql` (optional synthetic catalogue)
+4. `database/004_shared_auth_isolation.sql` (shared-hosting compatibility; no-op without FoodCo)
+5. `database/005_submission_bucket_name.sql` (compatibility correction)
 
 The scripts are one-time installation scripts for an empty project. They deliberately fail on name collisions; they do not drop existing data. Use a fresh project if setup fails halfway; each numbered script is transactional.
 
