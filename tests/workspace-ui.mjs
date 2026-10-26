@@ -5,6 +5,8 @@ w.supabase={createClient:()=>({auth:{getSession:async()=>({data:{session:null}})
 w.eval(['app.js','portal-update.js','invitation-picker.js','academic-workspace.js'].map(p=>readFileSync('public/'+p,'utf8')).join('\n')+`\nwindow.TEST={state,setAcademic:x=>academic=x,setCatalogue:x=>catalogue=x,setFilters:x=>courseFilters=x,matchingCourses,filterFields,shell,parseCourseCSV,peopleResults,action,setClient:x=>sb=x};`);
 const t=w.TEST;t.state.courses=data.courses.map(c=>({...c,is_demo:false}));t.state.departments=data.departments;t.setAcademic(data);t.setCatalogue(data.mappings);t.state.role='admin';t.state.profile={full_name:'Test Admin'};t.shell();
 assert.equal(w.document.querySelector('[data-page=courses]'),null);assert.equal(w.document.querySelector('[data-page=users]'),null);assert.ok(w.document.querySelector('[data-page=students]'));assert.ok(w.document.querySelector('[data-page=lecturers]'));
+for(const page of ['students','lecturers','overview','manage','students']){t.state.page=page;t.shell();const active=w.document.querySelectorAll('.sidebar [data-page].active');assert.equal(active.length,1);assert.equal(active[0].dataset.page,page);assert.equal(active[0].getAttribute('aria-current'),'page');assert.equal(w.document.querySelectorAll('.sidebar [aria-current=page]').length,1);}
+console.log('PASS: Students and Lecturers highlight correctly across navigation and shell rebuilds, with a single accessible current-page marker.');
 const session=data.sessions.find(s=>s.is_active).id;t.setFilters({year:'2',semester:'2',session});assert.equal(t.matchingCourses().length,8);
 t.setFilters({search:'COM 111',session});assert.equal(t.matchingCourses().length,1);
 assert.match(t.filterFields(),/datalist/);
