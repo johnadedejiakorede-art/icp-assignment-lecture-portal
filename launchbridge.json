@@ -1,0 +1,26 @@
+{
+  "pathsRelativeTo": "repository",
+  "root": "",
+  "output": "dist",
+  "migrations": [
+    "database/001_schema.sql",
+    "database/002_storage_notifications.sql",
+    "database/004_shared_auth_isolation.sql",
+    "database/005_submission_bucket_name.sql",
+    "database/006_helper_search_path.sql",
+    "database/007_portal_enrolment_invitations.sql",
+    "database/008_authorized_catalogue.sql",
+    "database/009_registration_and_invite_delivery.sql",
+    "database/010_department_access_and_scoped_invites.sql",
+    "database/011_department_catalogue_sync.sql",
+    "database/012_department_membership_guard.sql",
+    "database/013_academic_workspace.sql",
+    "database/014_people_performance.sql",
+    "database/015_initial_owner.sql"
+  ],
+  "ownerSetup": {
+    "version": 1,
+    "provisionFunction": "portal_private.launchbridge_provision_owner",
+    "path": "/owner-setup.html#"
+  }
+}

@@ -1,0 +1,3 @@
+# Source validates the bearer identity and approved admin role before sending invitations.
+[functions.icp-lecturer-invite]
+verify_jwt = false

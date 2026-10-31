@@ -1,8 +1,10 @@
 import { createClient } from 'npm:@supabase/supabase-js@2.57.4';
-const origin='https://icp-assignment-portal.pages.dev';
+const origin=(Deno.env.get('APP_ORIGIN')||Deno.env.get('PORTAL_ORIGIN')||'https://icp-assignment-portal.pages.dev').replace(/\/$/,'');
+const validOrigin=(()=>{try{const u=new URL(origin);return u.protocol==='https:'&&u.origin===origin}catch{return false}})();
 const headers={'Content-Type':'application/json','Access-Control-Allow-Origin':origin,'Access-Control-Allow-Headers':'authorization, apikey, content-type, x-client-info','Access-Control-Allow-Methods':'POST, OPTIONS','Vary':'Origin'};
 const reply=(status:number,body:unknown)=>new Response(JSON.stringify(body),{status,headers});
 Deno.serve(async(req:Request)=>{
+ if(!validOrigin)return reply(503,{error:'Configure a valid HTTPS APP_ORIGIN'});
  if(req.method==='OPTIONS')return new Response(null,{status:204,headers});
  if(req.method!=='POST')return reply(405,{error:'POST required'});
  const bearer=req.headers.get('Authorization')||'';
